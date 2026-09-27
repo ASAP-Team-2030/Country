@@ -1,0 +1,644 @@
+# Country — MVP Project Overview
+
+## 1. Project Overview
+
+**Country** is a travel and country-exploration web application.
+
+The application helps users discover countries, cities, tours, and travel-related information through a structured and searchable platform.
+
+The first version is intentionally small. The goal of the MVP is to establish the core product structure and validate the main user experience before expanding into more advanced travel services.
+
+### Initial Technology
+
+* **Frontend:** Angular 22
+* **Backend:** Python 3.14
+* **Database:** PostgreSQL or MongoDB
+* **Architecture:** Modular monolith
+* **Deployment:** To be defined ()
+
+---
+
+# 2. Product Concept
+
+At a high level:
+
+```text
+                    COUNTRY
+                       │
+        ┌──────────────┼──────────────┐
+        │              │              │
+     Explore         Discover       Plan
+        │              │              │
+     Cities          Tours          User
+     Countries        News        Dashboard
+        │              │              │
+        └──────────────┼──────────────┘
+                       │
+                 Travel Content
+```
+
+The application has two major sides:
+
+### Public side
+
+People can explore travel content without creating an account.
+
+### Platform side
+
+Registered users can manage their account, while Publishers create and manage travel content and Administrators manage the platform.
+
+---
+
+# 3. Users & Roles
+
+The MVP has four conceptual roles.
+
+## Guest
+
+A visitor who is not authenticated.
+
+Can:
+
+* Browse countries/cities
+* Browse tours
+* Read news
+* View public content
+* Navigate the application
+
+Cannot:
+
+* Manage personal data
+* Publish content
+* Access protected dashboards and features
+
+---
+
+## User
+
+A registered normal user.
+
+Can:
+
+* Log in / log out
+* Manage their profile
+* Access their dashboard
+* Save or manage personal travel-related information as those features are introduced
+* Use authenticated features
+
+---
+
+## Publisher
+
+A trusted content contributor.
+
+Can:
+
+* Access the Publisher area
+* Create travel content
+* Manage their published content
+* Publish:
+
+  * City information
+  * Tours
+  * News
+
+Publisher functionality is separate from the normal User experience.
+
+---
+
+## Admin
+
+Platform administrator.
+
+Can:
+
+* Access the Admin area
+* Manage users
+* Manage publishers
+* Manage platform content
+* Manage system-level data and configuration where required
+
+---
+
+# 4. MVP Modules
+
+The first version is divided into the following modules:
+
+```text
+Country
+│
+├── Authentication
+│
+├── User
+│
+├── Landing / Explore
+│
+├── Cities
+│
+├── Tours
+│
+├── News
+│
+├── Publisher
+│
+├── Admin
+│
+└── Media / Images
+```
+
+These modules are related, but they should remain conceptually separated so that the application can grow without becoming one large feature.
+
+---
+
+# 5. Authentication
+
+Authentication is the entry point for protected functionality.
+
+### MVP capabilities
+
+* Register
+* Login
+* Logout
+* JWT authentication
+* Current-user information
+* Basic role identification
+
+Basic flow:
+
+```text
+Guest
+  │
+  ├── Register ──→ User account
+  │
+  └── Login ─────→ JWT (pyjwt)
+                     │
+                     ├── User
+                     ├── Publisher
+                     └── Admin
+```
+
+Authentication should remain simple in the MVP.
+
+No complicated identity system is required initially.
+
+---
+
+# 6. Landing / Explore
+
+The landing page is the main entry point for visitors.
+
+It should communicate:
+
+* What Country is
+* What users can discover
+* Where to start exploring
+
+The main interaction is an exploration/search experience leading users toward:
+
+* Cities
+* Tours
+* News
+* Other travel content
+
+The landing page is primarily a **discovery interface**, not a dashboard.
+
+---
+
+# 7. Cities
+
+Cities represent destinations and provide structured travel information.
+
+A city can eventually contain information such as:
+
+* Name
+* Country
+* Description
+* Images
+* Attractions
+* Travel information
+* Related tours
+* Related news
+
+Basic user flow:
+
+```text
+Cities
+  │
+  ├── City List
+  │
+  └── City Details
+          │
+          ├── Information
+          ├── Images
+          ├── Tours
+          └── News
+```
+
+For the MVP, the city model should remain simple enough to support the first usable version.
+
+---
+
+# 8. Tours
+
+Tours represent travel experiences or organized trips.
+
+Users can:
+
+* Browse tours
+* View tour details
+
+A tour can contain:
+
+* Title
+* Destination
+* Description
+* Images
+* Duration
+* Basic travel information
+* Publisher information
+
+Basic flow:
+
+```text
+Tours
+  │
+  ├── Tour List
+  │
+  └── Tour Details
+```
+
+More advanced booking/payment functionality is outside the initial MVP.
+
+---
+
+# 9. News
+
+News provides travel-related articles or updates.
+
+Users can:
+
+* Browse news
+* Open individual articles
+
+News can contain:
+
+* Title
+* Content
+* Images
+* Publication information
+* Publisher
+* Publication date
+
+Basic flow:
+
+```text
+News
+  │
+  ├── News List
+  │
+  └── News Details
+```
+
+---
+
+# 10. User Dashboard
+
+Authenticated users have a personal dashboard.
+
+The MVP dashboard provides the foundation for future personalized functionality.
+
+Potential initial sections:
+
+* Profile
+* Account information
+* Personal travel-related data
+* Favorites / saved content
+
+The dashboard should be intentionally lightweight in the first version.
+
+---
+
+# 11. Publisher Area
+
+Publisher functionality is a separate application area.
+
+```text
+Publisher
+│
+├── Dashboard
+│
+├── My Cities
+│
+├── My Tours
+│
+└── My News
+```
+
+The Publisher can create and manage content that eventually becomes visible to normal visitors.
+
+Basic publishing flow:
+
+```text
+Publisher
+    │
+    ↓
+Create Content
+    │
+    ↓
+Edit Content
+    │
+    ↓
+Publish
+    │
+    ↓
+Public Content
+```
+
+The exact moderation/approval workflow can be introduced later.
+
+---
+
+# 12. Admin Area
+
+The Admin area is responsible for platform-level management.
+
+Initial areas:
+
+```text
+Admin
+│
+├── Dashboard
+├── Users
+├── Publishers
+├── Cities
+├── Tours
+├── News
+└── System Management
+```
+
+The MVP does not need an elaborate administration system.
+
+The purpose is to establish the administrative boundary so that future management functionality has a clear home.
+
+---
+
+# 13. Media / Image Processing
+
+Travel applications are heavily dependent on visual content.
+
+The application therefore has a dedicated media concern.
+
+Initial responsibilities may include:
+
+* Image upload
+* Image storage
+* Image association with content
+* Basic image processing
+
+Later this can grow into:
+
+* Resizing
+* Compression
+* Multiple image sizes
+* Optimization
+* Thumbnail generation
+* Image validation
+
+For the MVP, the important point is that media is treated as a **shared capability**, rather than duplicating image logic inside every module.
+
+---
+
+# 14. Main User Journey
+
+The simplest representation of the product is:
+
+```text
+                    LANDING
+                       │
+          ┌────────────┼────────────┐
+          ↓            ↓            ↓
+       CITIES        TOURS        NEWS
+          │            │            │
+          └────────────┼────────────┘
+                       ↓
+                  CONTENT DETAIL
+                       │
+                 ┌─────┴─────┐
+                 ↓           ↓
+              Guest         User
+                              │
+                         Dashboard
+```
+
+Content creation follows a different path:
+
+```text
+Publisher
+    │
+    ↓
+Publisher Dashboard
+    │
+    ├── Cities
+    ├── Tours
+    └── News
+          │
+          ↓
+     Public Content
+```
+
+Administration sits above the platform:
+
+```text
+                       ADMIN
+                         │
+        ┌────────────────┼────────────────┐
+        ↓                ↓                ↓
+      Users           Publishers       Content
+```
+
+---
+
+# 15. High-Level System Structure
+
+The application is a single deployable system with clear internal boundaries.
+
+```text
+┌───────────────────────────────────────────────┐
+│                  Angular                      │
+│                                               │
+│ Landing │ Auth │ Cities │ Tours │ News       │
+│ Dashboard │ Publisher │ Admin │ User         │
+└───────────────────────┬───────────────────────┘
+                        │
+                     HTTP/API
+                        │
+┌───────────────────────▼───────────────────────┐
+│                   Python API             │
+│                                               │
+│ Authentication │ Users │ Cities │ Tours       │
+│ News │ Publisher │ Admin │ Media             │
+└───────────────────────┬───────────────────────┘
+                        │
+┌───────────────────────▼───────────────────────┐
+│                 Application                   │
+│                                               │
+│ Business use cases and application logic      │
+└───────────────────────┬───────────────────────┘
+                        │
+┌───────────────────────▼───────────────────────┐
+│                    Domain                     │
+│                                               │
+│ Users │ Cities │ Tours │ News │ Core rules   │
+└───────────────────────┬───────────────────────┘
+                        │
+┌───────────────────────▼───────────────────────┐
+│                Infrastructure                 │
+│                                               │
+│ PostgreSQL │ EF Core │ JWT │ Files │ etc.    │
+└───────────────────────────────────────────────┘
+```
+
+---
+
+# 16. Initial Data Relationships
+
+At the conceptual level:
+
+```text
+User
+ │
+ └── Role
+      ├── User
+      ├── Publisher
+      └── Admin
+
+Publisher
+ │
+ ├── City Content
+ ├── Tour Content
+ └── News Content
+
+City
+ │
+ ├── Tours
+ └── News
+
+Media
+ │
+ └── Cities / Tours / News / Users
+```
+
+These are conceptual relationships only at this stage. The exact database model will be defined when each module is developed.
+
+---
+
+# 17. What Is NOT Part of the Initial MVP
+
+The following should not become distractions during the first implementation:
+
+* Complex booking system
+* Payment processing
+* Hotel booking
+* Flight booking
+* Full social network
+* Advanced recommendation engine
+* AI travel assistant
+* Complex moderation workflows
+* Microservices
+* Complex identity providers
+* Multi-tenant architecture
+* Advanced analytics
+* Mobile applications
+* Large-scale notification infrastructure
+
+They may become future features, but they are not required to establish the initial Country product.
+
+---
+
+# 18. Development Approach
+
+The application should be developed **module by module**.
+
+The initial order is:
+
+```text
+1. Project Foundation
+        ↓
+2. Authentication
+        ↓
+3. User
+        ↓
+4. Landing / Explore
+        ↓
+5. Cities
+        ↓
+6. Tours
+        ↓
+7. News
+        ↓
+8. Publisher
+        ↓
+9. Admin
+        ↓
+10. Media / Image Processing
+        ↓
+11. Integration / Testing / Polish
+```
+
+Each module will later receive its own detailed requirements.
+
+For each module we will define:
+
+```text
+Module
+  ↓
+Requirements
+  ↓
+Domain model
+  ↓
+Database changes
+  ↓
+Application logic
+  ↓
+API
+  ↓
+Frontend
+  ↓
+Authorization
+  ↓
+Testing
+```
+
+---
+
+# 19. MVP Definition
+
+The first meaningful version of Country is complete when a visitor can:
+
+1. Open Country.
+2. Explore available travel content.
+3. Browse cities.
+4. Browse tours.
+5. Read news.
+6. Open content details.
+7. Register.
+8. Log in.
+9. Access their user area.
+10. A Publisher can log in and manage publishing content.
+11. An Admin can access the administration area.
+12. The system persists its core data in PostgreSQL.
+13. Authentication and authorization work across frontend and backend.
+
+The exact behavior of each item will be defined later in the module-specific requirements.
+
+---
+
+# 20. Current Project Boundary
+
+At this stage, Country should be understood as:
+
+> **A structured travel-content platform where people discover destinations and travel information, while authenticated publishers provide the content and administrators manage the platform.**
+
+This document is a **project map**, not the final specification.
+
+The next step is to take one module at a time and turn it into an actual requirement set.
